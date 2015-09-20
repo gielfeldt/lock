@@ -5,7 +5,10 @@ namespace Gielfeldt\Lock\Test;
 use Gielfeldt\Lock;
 
 /**
- * @covers \Gielfeldt\Lock
+ * @covers \Gielfeldt\Lock\LockService
+ * @covers \Gielfeldt\Lock\LockItem
+ * @covers \Gielfeldt\Lock\LockEventHandler
+ * @covers \Gielfeldt\Lock\Storage\Memory
  */
 class LockTest extends \PHPUnit_Framework_TestCase
 {
