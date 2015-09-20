@@ -23,13 +23,7 @@ class LockService implements LockServiceInterface
     public function load($identifier)
     {
         if ($data = $this->options['storage']->loadByIdentifier($identifier)) {
-            $lock = $this->options['itemFactory']->factory($this);
-            $lock->setIdentifier($data['identifier']);
-            $lock->setName($data['name']);
-            $lock->setOwner($data['owner']);
-            $lock->setExpires($data['expires']);
-            $lock->setAutoRelease(false);
-            return $lock;
+            return $this->factory($data);
         }
         return false;
     }
@@ -37,13 +31,7 @@ class LockService implements LockServiceInterface
     public function loadCurrent($name)
     {
         if ($data = $this->options['storage']->loadByName($name)) {
-            $lock = $this->options['itemFactory']->factory($this);
-            $lock->setIdentifier($data['identifier']);
-            $lock->setName($data['name']);
-            $lock->setOwner($data['owner']);
-            $lock->setExpires($data['expires']);
-            $lock->setAutoRelease(false);
-            return $lock;
+            return $this->factory($data);
         }
         return false;
     }
@@ -105,5 +93,16 @@ class LockService implements LockServiceInterface
     public function bind($identifier, $eventName, callable $callback)
     {
         $this->options['events']->add($identifier, $eventName, $callback);
+    }
+
+    protected function factory($data)
+    {
+        $lock = $this->options['itemFactory']->factory($this);
+        $lock->setIdentifier($data['identifier']);
+        $lock->setName($data['name']);
+        $lock->setOwner($data['owner']);
+        $lock->setExpires($data['expires']);
+        $lock->setAutoRelease(false);
+        return $lock;
     }
 }
