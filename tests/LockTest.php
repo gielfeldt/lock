@@ -70,4 +70,25 @@ class LockTest extends \PHPUnit_Framework_TestCase
         $isLocked = $this->service1->isLocked('test1');
         $this->assertFalse($isLocked);
     }
+
+    /**
+     * Test acquire().
+     */
+    public function testRenew()
+    {
+        $lifetime = 30;
+        $start = microtime(true) + $lifetime;
+        $lock1 = $this->service1->acquire('test1', $lifetime);
+        $end = microtime(true) + $lifetime;
+        $this->assertTrue($lock1 instanceof Lock\LockItemInterface);
+        $this->assertTrue($start <= $lock1->getExpires() && $lock1->getExpires() <= $end);
+
+        $lifetime = 30;
+        $start = microtime(true) + $lifetime;
+        $lock2 = $this->service1->acquire('test1', $lifetime);
+        $end = microtime(true) + $lifetime;
+        $this->assertTrue($lock2 instanceof Lock\LockItemInterface);
+        $this->assertEquals($lock1->getIdentifier(), $lock2->getIdentifier());
+        $this->assertTrue($start <= $lock2->getExpires() && $lock2->getExpires() <= $end);
+    }
 }
