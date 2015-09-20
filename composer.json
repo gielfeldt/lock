@@ -1,0 +1,21 @@
+{
+    "name": "gielfeldt/lock",
+    "type": "library",
+    "description": "Lock library.",
+    "keywords": ["lock", "semaphore", "mutex"],
+    "homepage": "https://github.com/gielfeldt/lock",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Gielfeldt",
+            "email": "thomas@gielfeldt.dk"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "gielfeldt/shutdownhandler": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "Gielfeldt\\Lock\\": "src/" }
+    }
+}
