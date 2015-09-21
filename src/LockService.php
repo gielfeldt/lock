@@ -63,7 +63,7 @@ class LockService implements LockServiceInterface
                 // Not ours. Has it expired?
                 if ($lock->getExpires() < microtime(true)) {
                     // Release it, so that we may re-acquire it.
-                    $this->release($lock);
+                    $this->release($lock->getIdentifier());
                 } else {
                     // Nope, the we cannot acquire lock.
                     return false;
@@ -90,9 +90,14 @@ class LockService implements LockServiceInterface
         }
     }
 
-    public function bind($identifier, $eventName, callable $callback)
+    public function getStorage()
     {
-        $this->options['events']->add($identifier, $eventName, $callback);
+        return $this->options['storage'];
+    }
+
+    public function getEventHandler()
+    {
+        return $this->options['events'];
     }
 
     protected function factory($data)

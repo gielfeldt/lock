@@ -14,5 +14,7 @@ interface LockServiceInterface
 
     public function release($identifier);
 
-    public function bind($identifier, $eventName, callable $callback);
+    public function getStorage();
+
+    public function getEventHandler();
 }
