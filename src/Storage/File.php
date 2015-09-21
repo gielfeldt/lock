@@ -89,13 +89,15 @@ class File extends Lock\LockStorageAbstract
         $lockData = json_decode($data);
 
         $file = $this->path . "/metadata." . $lockData->name;
+        $released = false;
         if ($fh = @fopen($file, 'r')) {
             if (@flock($fh, LOCK_EX)) {
                 @unlink($lockfile);
                 @unlink($file);
+                $released = true;
             }
             @fclose($fh);
         }
-        return true;
+        return $released;
     }
 }
