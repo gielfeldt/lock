@@ -45,8 +45,11 @@ abstract class LockTestBase extends \PHPUnit_Framework_TestCase
      */
     public function testAcquire()
     {
-        $lock = $this->service1->acquire('test1');
-        $this->assertTrue($lock instanceof Lock\LockItemInterface);
+        $lock1 = $this->service1->acquire('test1');
+        $this->assertTrue($lock1 instanceof Lock\LockItemInterface);
+
+        $lock2 = $this->service2->acquire('test1');
+        $this->assertFalse($lock2);
     }
 
     /**
