@@ -4,6 +4,8 @@ namespace Gielfeldt\Lock\Test;
 
 use Gielfeldt\Lock;
 
+include_once __DIR__ . '/BadUpdateStorage.php';
+
 /**
  * @covers \Gielfeldt\Lock\LockStorageAbstract
  */
@@ -77,6 +79,17 @@ abstract class StorageTestBase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
 
         $result = $this->service->getStorage()->delete($lock->getIdentifier());
+        $this->assertFalse($result);
+    }
+
+    public function testBadUpdate()
+    {
+        $lock = $this->service->acquire('test1');
+        $this->assertTrue($lock instanceof Lock\LockItemInterface);
+
+        $this->service->setStorage(new BadUpdateStorage($this->service->getStorage()));
+
+        $result = $this->service->acquire('test1');
         $this->assertFalse($result);
     }
 }

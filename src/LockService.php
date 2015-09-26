@@ -98,9 +98,19 @@ class LockService implements LockServiceInterface
         return $this->options['storageHandler'];
     }
 
+    public function setStorage(LockStorageInterface $storageHandler)
+    {
+        $this->options['storageHandler'] = $storageHandler;
+    }
+
     public function getEventHandler()
     {
         return $this->options['eventHandler'];
+    }
+
+    public function setEventHandler(LockEventHandlerInterface $eventHandler)
+    {
+        $this->options['eventHandler'] = $eventHandler;
     }
 
     protected function factory($data)

@@ -206,4 +206,19 @@ abstract class LockTestBase extends \PHPUnit_Framework_TestCase
         $lock->release();
         $this->assertEquals(self::$testVariable, 1);
     }
+
+    public function testStorageHandler()
+    {
+        try {
+            $service = new Lock\LockService([]);
+            $this->assertTrue(false);
+        } catch (\InvalidArgumentException $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    public function testEventHandlerReplace()
+    {
+        $this->service1->setEventHandler($this->service1->getEventHandler());
+    }
 }
