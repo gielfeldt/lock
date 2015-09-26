@@ -33,10 +33,14 @@ more information about how to use Composer.
 
 This lock handler ...
 
-#### Motivation
+#### Motivation/objectives
 
-1. Robust locks that ensures release upon exit
-2. Attach event handlers on a lock release.
+1. "Easy" API (™)
+2. Separate storage logic to avoid boilerplate
+3. Ensure release on lock destruction
+4. Optionally persistent across requests
+5. Event handlers on e.g. release
+6. Force release (by non-owner)
 
 #### Example 1 - using Lock library
 
