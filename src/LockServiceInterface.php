@@ -16,7 +16,7 @@ interface LockServiceInterface
 
     public function getStorage();
 
-    public function setStorage(LockStorageInterface $storageHandler);
+    public function setStorage(LockStorageInterface $storage);
 
     public function getEventHandler();
 

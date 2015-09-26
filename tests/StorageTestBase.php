@@ -28,7 +28,7 @@ abstract class StorageTestBase extends \PHPUnit_Framework_TestCase
         parent::setup();
         $storage = $this->getStorage();
         $this->service = new Lock\LockService([
-            'storageHandler' => $storage,
+            'storage' => $storage,
         ]);
     }
 

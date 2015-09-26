@@ -43,7 +43,7 @@ class LockFileTest extends LockTestBase
     public function testFileCreation()
     {
         $service = new Lock\LockService([
-            'storageHandler' => new Lock\Storage\File($this->path . '/does/not/exist'),
+            'storage' => new Lock\Storage\File($this->path . '/does/not/exist'),
         ]);
         $lock1 = $service->acquire('lock1');
         $this->assertFalse($lock1 instanceof Lock\LockItemInterface);
