@@ -12,8 +12,11 @@ class LockService implements LockServiceInterface
         if (!isset($options['itemFactory'])) {
             $options['itemFactory'] = new LockItemFactory();
         }
-        if (!isset($options['events'])) {
-            $options['events'] = new LockEventHandler();
+        if (!isset($options['eventHandler'])) {
+            $options['eventHandler'] = new LockEventHandler();
+        }
+        if (!isset($options['storageHandler'])) {
+            throw new \InvalidArgumentException('No storage handler specified');
         }
 
         $this->options = $options;
@@ -22,7 +25,7 @@ class LockService implements LockServiceInterface
 
     public function load($identifier)
     {
-        if ($data = $this->options['storage']->loadByIdentifier($identifier)) {
+        if ($data = $this->options['storageHandler']->loadByIdentifier($identifier)) {
             return $this->factory($data);
         }
         return false;
@@ -30,7 +33,7 @@ class LockService implements LockServiceInterface
 
     public function loadCurrent($name)
     {
-        if ($data = $this->options['storage']->loadByName($name)) {
+        if ($data = $this->options['storageHandler']->loadByName($name)) {
             return $this->factory($data);
         }
         return false;
@@ -49,7 +52,7 @@ class LockService implements LockServiceInterface
             if ($lock->getOwner() == $this->owner) {
                 // We own this lock. Update expiration.
                 $lock->setExpires($expires);
-                if (!$this->options['storage']->update($lock)) {
+                if (!$this->options['storageHandler']->update($lock)) {
                     // Could not update lock.
                     return false;
                 }
@@ -74,7 +77,7 @@ class LockService implements LockServiceInterface
         $lock->setName($name);
         $lock->setOwner($this->owner);
         $lock->setExpires($expires);
-        if ($this->options['storage']->insert($lock)) {
+        if ($this->options['storageHandler']->insert($lock)) {
             $lock->setAutoRelease(true);
             return $lock;
         } else {
@@ -85,19 +88,19 @@ class LockService implements LockServiceInterface
     public function release($identifier)
     {
         $lock = $this->load($identifier);
-        if ($lock && $this->options['storage']->delete($identifier)) {
-            $this->options['events']->flush($this, $lock, 'release');
+        if ($lock && $this->options['storageHandler']->delete($identifier)) {
+            $this->options['eventHandler']->flush($this, $lock, 'release');
         }
     }
 
     public function getStorage()
     {
-        return $this->options['storage'];
+        return $this->options['storageHandler'];
     }
 
     public function getEventHandler()
     {
-        return $this->options['events'];
+        return $this->options['eventHandler'];
     }
 
     protected function factory($data)

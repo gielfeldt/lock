@@ -33,10 +33,10 @@ abstract class LockTestBase extends \PHPUnit_Framework_TestCase
         parent::setup();
         $storage = $this->getStorage();
         $this->service1 = new Lock\LockService([
-            'storage' => $storage,
+            'storageHandler' => $storage,
         ]);
         $this->service2 = new Lock\LockService([
-            'storage' => $storage,
+            'storageHandler' => $storage,
         ]);
     }
 
