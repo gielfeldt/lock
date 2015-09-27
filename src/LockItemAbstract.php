@@ -100,16 +100,16 @@ abstract class LockItemAbstract implements LockItemInterface
 
     public function bind($eventName, callable $callback)
     {
-        return $this->getService()->getEventHandler()->add($this->getIdentifier(), $eventName, $callback);
+        return $this->getService()->getEventHandler()->add($eventName, $this->getIdentifier(), $callback);
     }
 
     public function unBind($eventName, $eventId)
     {
-        return $this->getService()->getEventHandler()->remove($this->getIdentifier(), $eventName, $eventId);
+        return $this->getService()->getEventHandler()->remove($eventName, $this->getIdentifier(), $eventId);
     }
 
     public function clearBind($eventName)
     {
-        return $this->getService()->getEventHandler()->clear($this->getIdentifier(), $eventName);
+        return $this->getService()->getEventHandler()->clear($eventName, $this->getIdentifier());
     }
 }

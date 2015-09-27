@@ -6,31 +6,36 @@ class LockEventHandler implements LockEventHandlerInterface
 {
     protected $events = array();
 
-    public function add($identifier, $eventName, callable $callback)
+    public function add($eventName, $identifier, callable $callback)
     {
         $eventId = uniqid();
-        $this->events[$identifier][$eventName][$eventId] = $callback;
+        $this->events[$eventName][$identifier][$eventId] = $callback;
         return $eventId;
     }
 
-    public function remove($identifier, $eventName, $eventId)
+    public function remove($eventName, $identifier, $eventId)
     {
-        unset($this->events[$identifier][$eventName][$eventId]);
+        unset($this->events[$eventName][$identifier][$eventId]);
     }
 
-    public function clear($identifier, $eventName)
+    public function clear($eventName, $identifier)
     {
-        unset($this->events[$identifier][$eventName]);
+        unset($this->events[$eventName][$identifier]);
     }
 
     public function flush($service, LockItemInterface $lock, $eventName)
     {
         $identifier = $lock->getIdentifier();
-        if (isset($this->events[$identifier][$eventName])) {
-            foreach ($this->events[$identifier][$eventName] as $eventId => $callback) {
-                unset($this->events[$identifier][$eventName][$eventId]);
+        if (isset($this->events[$eventName][$identifier])) {
+            foreach ($this->events[$eventName][$identifier] as $eventId => $callback) {
+                unset($this->events[$eventName][$identifier][$eventId]);
                 $callback($lock);
             }
         }
+    }
+
+    public function getEvents($eventName)
+    {
+        return isset($this->events[$eventName]) ? $this->events[$eventName] : [];
     }
 }
