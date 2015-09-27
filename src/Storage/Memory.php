@@ -35,15 +35,15 @@ class Memory extends Lock\LockStorageAbstract
         if (isset($this->locksIndex[$lock->getName()])) {
             return false;
         }
-        $lock->setIdentifier(uniqid());
-        $this->locks[$lock->getIdentifier()] = [
-            'identifier' => $lock->getIdentifier(),
+        $identifier = uniqid();
+        $this->locks[$identifier] = [
+            'identifier' => $identifier,
             'name' => $lock->getName(),
             'expires' => $lock->getExpires(),
             'owner' => $lock->getOwner(),
         ];
-        $this->locksIndex[$lock->getName()] = $lock->getIdentifier();
-        return true;
+        $this->locksIndex[$lock->getName()] = $identifier;
+        return $identifier;
     }
 
     public function update(Lock\LockItemInterface $lock)

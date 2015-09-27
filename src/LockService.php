@@ -77,7 +77,8 @@ class LockService implements LockServiceInterface
         $lock->setName($name);
         $lock->setOwner($this->owner);
         $lock->setExpires($expires);
-        if ($this->options['storage']->insert($lock)) {
+        if ($identifier = $this->options['storage']->insert($lock)) {
+            $lock->setIdentifier($identifier);
             $lock->setAutoRelease(true);
             return $lock;
         } else {

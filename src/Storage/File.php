@@ -44,13 +44,13 @@ class File extends Lock\LockStorageAbstract
         if (!$fh) {
             return false;
         }
-        $lock->setIdentifier(uniqid());
+        $identifier = uniqid();
         fwrite($fh, json_encode([
-            'identifier' => $lock->getIdentifier()
+            'identifier' => $identifier
         ]));
-        $file = $this->path . "/lock." . $lock->getIdentifier();
+        $file = $this->path . "/lock." . $identifier;
         $result = @file_put_contents($file, json_encode([
-            'identifier' => $lock->getIdentifier(),
+            'identifier' => $identifier,
             'name' => $lock->getName(),
             'expires' => $lock->getExpires(),
             'owner' => $lock->getOwner(),
@@ -61,7 +61,7 @@ class File extends Lock\LockStorageAbstract
             @unlink($this->path . "/metadata." . $lock->getName());
         }
         @fclose($fh);
-        return $result !== false;
+        return $result !== false ? $identifier : false;
     }
 
     public function update(Lock\LockItemInterface $lock)

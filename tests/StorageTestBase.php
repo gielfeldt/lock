@@ -43,7 +43,7 @@ abstract class StorageTestBase extends \PHPUnit_Framework_TestCase
         $lock->setName('test2');
         $lock->setIdentifier(null);
         $result = $this->service->getStorage()->insert($lock);
-        $this->assertTrue($result);
+        $this->assertTrue($result !== false);
 
         $lock->setIdentifier(null);
         $result = $this->service->getStorage()->insert($lock);
